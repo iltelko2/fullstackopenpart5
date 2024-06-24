@@ -1,19 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Togglable from './components/Togglable'
+import CreateNewBlog from './components/CreateNewBlog'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('') 
-  const [author, setAuthor] = useState('') 
-  const [url, setUrl] = useState('') 
- 
+  
   const [errorMessage, setErrorMessage] = useState('') 
   const [error, setError] = useState(false) 
+
+  const blogFormRef = useRef()
 
   const ErrorMessage = () => {
     return (<div style={{ border: '1px solid ' + error ? 'red' : 'green', color: error ? 'red' : 'green' }}>
@@ -41,29 +42,13 @@ const App = () => {
       </div>)
   }
 
-  const CreateNew = () => {
-    return (
-      <div>
-        <h2>Create New</h2>
-        Title: <input type="text" value={title} onChange={({ target }) => setTitle(target.value)}></input><br></br>
-        Author: <input type="text" value={author} onChange={({ target }) => setAuthor(target.value)}></input><br></br>
-        URL: <input type="text" value={url} onChange={({ target }) => setUrl(target.value)}></input><br></br>
-        <button type="button" onClick={async () => { await blogService.createBlog({ title, author, url }) 
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-
-      setError(false)
-      setErrorMessage(title + ' created')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-
-      blogService.getAll().then(blogs =>
-        setBlogs( blogs )
-      )
-      }}>Create</button>
-      </div>
+  const CreateBlog = async ({ title, author, url }) => {
+    blogFormRef.current.toggleVisibility()
+          
+    await blogService.createBlog({ title, author, url }) 
+    
+    blogService.getAll().then(blogs =>
+      setBlogs( blogs )
     )
   }
 
@@ -145,7 +130,9 @@ const App = () => {
     {!user && Login()} 
     {user && <div>
       <Logout></Logout>
-      {CreateNew()}
+      <Togglable buttonLabel='Create new' ref={blogFormRef}>
+        <CreateNewBlog setError={setError} setErrorMessage={setErrorMessage} CreateBlog={CreateBlog} />
+      </Togglable>
        <p>{user.name} logged in</p>
          {Blogs()}
       </div>
