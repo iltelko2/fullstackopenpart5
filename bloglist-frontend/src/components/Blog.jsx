@@ -17,9 +17,9 @@ const Blog = ({ blog, likeBlogInner, removeBlogInner }) => {
   }
 
   return (<Hidable title={blog.title + ' ' + blog.author}>
-    <p>likes {likes} <button onClick={likeBlog}>like</button></p>
-    <p>{blog.url}</p>
-    <p>{blog.user.name}</p>
+    <p><span className='blog_likes'>likes {likes} </span><button onClick={likeBlog}>like</button></p>
+    <p className='blog_url'>{blog.url}</p>
+    <p className='blog_user'>{blog.user.name}</p>
     <button onClick={removeBlog}>remove</button>
   </Hidable>)
 }
