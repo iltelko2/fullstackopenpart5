@@ -32,12 +32,16 @@ const App = () => {
     </div>)
   }
 
+  const likeBlogInner = (id, blog) => {
+    blogService.updateBlog(id, blog)
+  }
+
   const Blogs = () => {
     return (
       <div>
         <h2>blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} likeBlogInner={likeBlogInner} />
         )}
       </div>)
   }
