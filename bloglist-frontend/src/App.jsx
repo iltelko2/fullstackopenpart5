@@ -37,9 +37,16 @@ const App = () => {
   }
 
   const removeBlogInner = (id) => {
-    blogService.deleteBlog(id)
 
-    setBlogs(blogs.filter(b => b.id !== id))
+    const b = blogs.find(b => b.id === id)
+
+    const sure = window.confirm('Are you sure you want to remove ' + b.name + ' ?')
+
+    if (sure) {
+      blogService.deleteBlog(id)
+
+      setBlogs(blogs.filter(b => b.id !== id))
+    }
   }
 
   const sortBlogs = (bloga, blogb) => {
