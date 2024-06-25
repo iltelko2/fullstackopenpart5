@@ -36,12 +36,27 @@ const App = () => {
     blogService.updateBlog(id, blog)
   }
 
+  const removeBlogInner = (id) => {
+    blogService.deleteBlog(id)
+
+    setBlogs(blogs.filter(b => b.id !== id))
+  }
+
+  const sortBlogs = (bloga, blogb) => {
+    if (bloga.likes < blogb.likes) {
+      return -1;
+    } else if (bloga.likes > blogb.likes) {
+      return 1;
+    }
+    return 0;
+  }
+
   const Blogs = () => {
     return (
       <div>
         <h2>blogs</h2>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} likeBlogInner={likeBlogInner} />
+        {blogs.sort(sortBlogs).map(blog =>
+          <Blog key={blog.id} blog={blog} likeBlogInner={likeBlogInner} removeBlogInner={removeBlogInner} />
         )}
       </div>)
   }
