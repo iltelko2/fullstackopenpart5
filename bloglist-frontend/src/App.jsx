@@ -7,18 +7,18 @@ import CreateNewBlog from './components/CreateNewBlog'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  
-  const [errorMessage, setErrorMessage] = useState('') 
-  const [error, setError] = useState(false) 
+
+  const [errorMessage, setErrorMessage] = useState('')
+  const [error, setError] = useState(false)
 
   const blogFormRef = useRef()
 
   const ErrorMessage = () => {
     return (<div style={{ border: '1px solid ' + error ? 'red' : 'green', color: error ? 'red' : 'green' }}>
-{errorMessage}
+      {errorMessage}
     </div>)
   }
 
@@ -51,11 +51,11 @@ const App = () => {
 
   const sortBlogs = (bloga, blogb) => {
     if (bloga.likes < blogb.likes) {
-      return -1;
+      return -1
     } else if (bloga.likes > blogb.likes) {
-      return 1;
+      return 1
     }
-    return 0;
+    return 0
   }
 
   const Blogs = () => {
@@ -70,9 +70,9 @@ const App = () => {
 
   const CreateBlog = async ({ title, author, url }) => {
     blogFormRef.current.toggleVisibility()
-          
-    await blogService.createBlog({ title, author, url }) 
-    
+
+    await blogService.createBlog({ title, author, url })
+
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )
@@ -83,7 +83,7 @@ const App = () => {
       <form onSubmit={handleLogin}>
         <div>
           username
-            <input
+          <input
             type="text"
             value={username}
             name="Username"
@@ -92,7 +92,7 @@ const App = () => {
         </div>
         <div>
           password
-            <input
+          <input
             type="password"
             value={password}
             name="Password"
@@ -101,10 +101,10 @@ const App = () => {
         </div>
         <button type="submit">login</button>
       </form>
-      </>
-      )
+    </>
+    )
   }
-  
+
   const handleLogin = async (event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
@@ -133,6 +133,7 @@ const App = () => {
       }, 5000)
     }
   }
+
   useEffect(() => {
     if (!user && window.localStorage.getItem('user')) {
       const user = JSON.parse(window.localStorage.getItem('user'))
@@ -153,16 +154,16 @@ const App = () => {
   }, [blogs])
   return (<>
     {errorMessage && ErrorMessage()}
-    {!user && Login()} 
+    {!user && Login()}
     {user && <div>
       <Logout></Logout>
       <Togglable buttonLabel='Create new' ref={blogFormRef}>
         <CreateNewBlog setError={setError} setErrorMessage={setErrorMessage} CreateBlog={CreateBlog} />
       </Togglable>
-       <p>{user.name} logged in</p>
-         {Blogs()}
-      </div>
-    } 
+      <p>{user.name} logged in</p>
+      {Blogs()}
+    </div>
+    }
   </>
   )
 }

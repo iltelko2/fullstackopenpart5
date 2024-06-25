@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Hidable = (props) => {
   const [visible, setVisible] = useState(false)
@@ -9,7 +10,7 @@ const Hidable = (props) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
-  
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -20,8 +21,8 @@ const Hidable = (props) => {
 
   return (
     <div style={blogStyle}>
-        {props.title}
-        <button onClick={toggleVisibility}>{visible ? 'hide': 'show'}</button>
+      {props.title}
+      <button onClick={toggleVisibility}>{visible ? 'hide': 'show'}</button>
       <div style={showWhenVisible}>
         {props.children}
       </div>
@@ -29,5 +30,11 @@ const Hidable = (props) => {
   )
 
 }
+
+Hidable.propTypes = {
+  title: PropTypes.string.isRequired
+}
+
+Hidable.displayName = 'Togglable'
 
 export default Hidable
