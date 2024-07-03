@@ -117,5 +117,27 @@ describe('Blog app', () => {
 
       expect(await url2.locator('..').getByRole('button', { name: 'remove' }).count()).toBe(0)
     })
+
+    test('', async ({ page }) => {
+      page.on('dialog', dialog => dialog.accept())
+
+      await page.getByRole('button', { name: 'Create new' }).click()
+      await page.locator('#input_title').click()
+      await page.locator('#input_title').fill('poiston testausta')
+      await page.locator('#input_author').fill('Jari Pelkonen')
+      await page.locator('#input_url').fill('www.pelkonen.fi')
+      await page.getByRole('button', { name: 'Create' }).click()
+
+      const showBtn = page.locator('span').filter({ hasText: 'poiston testausta' }).first().locator('..').getByRole('button', { name: 'show' })
+      await showBtn.waitFor()
+      await showBtn.click()
+
+      const url = page.locator('p.blog_url').filter({ hasText: 'www.pelkonen.fi' }).first()
+
+      await url.waitFor()
+      await url.locator('..').getByRole('button', { name: 'remove' }).click()
+
+
+    })
   })
 })
