@@ -19,7 +19,7 @@ const Hidable = (props) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className={props.cls} style={blogStyle}>
       <span className="title">{props.title}</span>
       <button onClick={toggleVisibility}>{visible ? 'hide': 'show'}</button>
       <div style={showWhenVisible}>

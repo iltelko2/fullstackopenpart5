@@ -19,7 +19,7 @@ const Blog = ({ blog, likeBlogInner, removeBlogInner, user }) => {
   console.log(user.id)
   console.log(blog.user.id)
 */
-  return (<Hidable title={blog.title + ' ' + blog.author}>
+  return (<Hidable cls="blog" title={blog.title + ' ' + blog.author}>
     <p><span className='blog_likes'>likes {likes} </span><button onClick={likeBlog}>like</button></p>
     <p className='blog_url'>{blog.url}</p>
     <p className='blog_user'>{blog.user.name}</p>

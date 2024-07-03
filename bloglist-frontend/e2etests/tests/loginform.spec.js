@@ -118,7 +118,7 @@ describe('Blog app', () => {
       expect(await url2.locator('..').getByRole('button', { name: 'remove' }).count()).toBe(0)
     })
 
-    test('', async ({ page }) => {
+    test('user can remove the blog which the user created', async ({ page }) => {
       page.on('dialog', dialog => dialog.accept())
 
       await page.getByRole('button', { name: 'Create new' }).click()
@@ -136,8 +136,39 @@ describe('Blog app', () => {
 
       await url.waitFor()
       await url.locator('..').getByRole('button', { name: 'remove' }).click()
-
-
     })
+
+    test.only('blogs are ordered in right order based on likes', async ({ page }) => {
+      page.on('dialog', dialog => dialog.accept())
+
+      await page.getByRole('button', { name: 'Create new' }).click()
+      await page.locator('#input_title').click()
+      await page.locator('#input_title').fill('järjestyksen testausta')
+      await page.locator('#input_author').fill('Jari Pelkonen')
+      await page.locator('#input_url').fill('www.jarjestys.fi')
+      await page.getByRole('button', { name: 'Create' }).click()
+
+
+      await page.locator('div').filter({ hasText: /^järjestyksen testausta/ }).first().getByRole('button', { name: 'show' }).waitFor()
+      await page.locator('div').filter({ hasText: /^järjestyksen testausta/ }).first().getByRole('button', { name: 'show' }).click()
+      await page.locator('div').filter({ hasText: /www.jarjestys.fi/ }).first().waitFor()
+      await page.getByRole('button', { name: 'like' }).click()
+      await page.getByRole('button', { name: 'like' }).click()
+
+      await page.getByRole('button', { name: 'Create new' }).click()
+      await page.locator('#input_title').click()
+      await page.locator('#input_title').fill('järjestyksen testaust2')
+      await page.locator('#input_author').fill('Jari Pelkonen2')
+      await page.locator('#input_url').fill('www.jarjestys.fi2')
+      await page.getByRole('button', { name: 'Create' }).click()
+
+      await page.reload()
+
+      let like1 = await page.locator('div').filter({ hasText: /^järjestyksen testausta/ }).getByText('likes 2').first().innerText()
+      let like2 = await page.locator('div').filter({ hasText: /^järjestyksen testaust2/ }).first().locator('span.blog_likes').innerText()
+
+      expect(parseInt(like1.replace('likes', '').trim())).toBeGreaterThan(parseInt(like2.replace('likes', '').trim()))
+    })
+
   })
 })
