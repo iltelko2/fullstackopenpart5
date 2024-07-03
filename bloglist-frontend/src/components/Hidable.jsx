@@ -20,7 +20,7 @@ const Hidable = (props) => {
 
   return (
     <div style={blogStyle}>
-      {props.title}
+      <span className="title">{props.title}</span>
       <button onClick={toggleVisibility}>{visible ? 'hide': 'show'}</button>
       <div style={showWhenVisible}>
         {props.children}

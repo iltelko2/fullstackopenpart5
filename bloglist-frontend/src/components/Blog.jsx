@@ -1,7 +1,7 @@
 import Hidable from './Hidable'
 import { useState } from 'react'
 
-const Blog = ({ blog, likeBlogInner, removeBlogInner }) => {
+const Blog = ({ blog, likeBlogInner, removeBlogInner, user }) => {
 
   const [likes, setLikes] = useState(blog.likes)
 
@@ -15,12 +15,17 @@ const Blog = ({ blog, likeBlogInner, removeBlogInner }) => {
   const removeBlog = () => {
     removeBlogInner(blog.id)
   }
-
+  /*
+  console.log(user.id)
+  console.log(blog.user.id)
+*/
   return (<Hidable title={blog.title + ' ' + blog.author}>
     <p><span className='blog_likes'>likes {likes} </span><button onClick={likeBlog}>like</button></p>
     <p className='blog_url'>{blog.url}</p>
     <p className='blog_user'>{blog.user.name}</p>
-    <button onClick={removeBlog}>remove</button>
+    {user.id === blog.user.id ?
+      (<button onClick={removeBlog}>remove</button>) :
+      (<></>)}
   </Hidable>)
 }
 

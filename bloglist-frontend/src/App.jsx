@@ -58,12 +58,12 @@ const App = () => {
     return 0
   }
 
-  const Blogs = () => {
+  const Blogs = (user) => {
     return (
       <div>
         <h2>blogs</h2>
         {blogs.sort(sortBlogs).map(blog =>
-          <Blog key={blog.id} blog={blog} likeBlogInner={likeBlogInner} removeBlogInner={removeBlogInner} />
+          <Blog key={blog.id} blog={blog} user={user} likeBlogInner={likeBlogInner} removeBlogInner={removeBlogInner} />
         )}
       </div>)
   }
@@ -87,6 +87,7 @@ const App = () => {
             type="text"
             value={username}
             name="Username"
+            data-testid="username"
             onChange={({ target }) => setUsername(target.value)}
           />
         </div>
@@ -96,6 +97,7 @@ const App = () => {
             type="password"
             value={password}
             name="Password"
+            data-testid="password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
@@ -161,7 +163,8 @@ const App = () => {
         <CreateNewBlog setError={setError} setErrorMessage={setErrorMessage} CreateBlog={CreateBlog} />
       </Togglable>
       <p>{user.name} logged in</p>
-      {Blogs()}
+      {console.log(user)}
+      {Blogs(user)}
     </div>
     }
   </>
